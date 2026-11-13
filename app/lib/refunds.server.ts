@@ -315,7 +315,7 @@ export type RefundOffer = {
 };
 
 /**
- * What the course page offers a student who wants their money back: their
+ * What the course page offers a learner who wants their money back: their
  * newest Individual Purchase of the course, if it can be refunded. Team
  * Licences are refunded from the team page instead.
  */
@@ -497,7 +497,7 @@ export function listRefundRequestsForReview(
       daysSincePurchase: Math.max(0, Math.floor(msSincePurchase / 86_400_000)),
       figures,
       ruleBreaks,
-      // A Claimed Seat belongs to another student, so the only way out of
+      // A Claimed Seat belongs to another learner, so the only way out of
       // that request is a decline. See docs/adr/0003.
       canApprove:
         row.status === RefundStatus.Open && !ruleBreaks.includes("seat_claimed"),

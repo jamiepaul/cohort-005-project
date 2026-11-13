@@ -62,7 +62,7 @@ function addLearner(name: string) {
     .values({
       name,
       email: `${name.toLowerCase()}@example.com`,
-      role: UserRole.Student,
+      role: UserRole.Learner,
     })
     .returning()
     .get();

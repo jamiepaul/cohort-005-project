@@ -9,4 +9,4 @@ Purchasing-power prices depend on the buyer's country, which `resolveCountry` ta
 
 ## Consequences
 
-A Student who would qualify for a purchasing-power price, but whose request does not come through Cloudflare, is charged full price.
+A Learner who would qualify for a purchasing-power price, but whose request does not come through Cloudflare, is charged full price.
