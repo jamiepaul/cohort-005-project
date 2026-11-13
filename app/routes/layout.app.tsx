@@ -2,6 +2,14 @@ import { Outlet } from "react-router";
 import type { Route } from "./+types/layout.app";
 import { Sidebar } from "~/components/sidebar";
 import { DevUI } from "~/components/dev-ui";
+import {
+  NotificationsPrototypeProvider,
+  PrototypeSwitcher,
+  VariantABell,
+  VariantBInbox,
+  VariantCNavItem,
+  usePrototypeVariant,
+} from "~/components/notifications-prototype";
 import { Toaster } from "sonner";
 import { getCurrentUserId, getDevCountry } from "~/lib/session";
 import { getCountryTierInfo, COUNTRIES } from "~/lib/ppp";
@@ -228,8 +236,12 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
   } = loaderData;
 
   return (
+    <NotificationsPrototypeProvider
+      role={currentUser?.role ?? null}
+      userId={currentUser?.id ?? null}
+    >
     <div className="flex h-screen overflow-hidden">
-      <Sidebar
+      <PrototypeSidebar
         currentUser={currentUser}
         recentCourses={recentCourses}
         isTeamAdmin={userIsTeamAdmin}
@@ -245,6 +257,27 @@ export default function AppLayout({ loaderData }: Route.ComponentProps) {
         countries={countries}
       />
       <Toaster position="bottom-right" richColors closeButton />
+      {currentUser && <PrototypeSwitcher />}
     </div>
+    </NotificationsPrototypeProvider>
+  );
+}
+
+// PROTOTYPE (notifications): picks where the notification UI mounts per variant.
+function PrototypeSidebar(props: React.ComponentProps<typeof Sidebar>) {
+  const variant = usePrototypeVariant();
+  const signedIn = !!props.currentUser;
+  return (
+    <Sidebar
+      {...props}
+      headerSlot={signedIn && variant === "A" ? <VariantABell /> : undefined}
+      navSlot={
+        !signedIn ? undefined : variant === "B" ? (
+          <VariantBInbox />
+        ) : variant === "C" ? (
+          <VariantCNavItem />
+        ) : undefined
+      }
+    />
   );
 }
